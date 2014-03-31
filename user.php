@@ -1,7 +1,12 @@
 <?
 session_start();
 if(isset($_SESSION['user'])){
-	//echo $_SESSION['user'];
+		if($_SESSION['status'] == '2'){
+		
+		header("Refresh : 3;url = admin.php");
+		echo "<h3>ระบบไม่สามารถทำงานได้ เนื่องจากท่านเป็นผู้ดูแลระบบ จะกลับสู่หน้าหลักภายใน 3 วินาที </h3>";
+		echo "</body></html>";
+		exit;
 }else
 {
 	header("Refresh : 3;url = login.php");
