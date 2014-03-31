@@ -33,8 +33,15 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 		 
 		if(mysql_num_rows($result) ==1){
 			
+			
+			
 			if($pass == $password){
 				
+				
+				if(isset($_SESSION['user'])){
+					$msg .="ผู้ใช้้ท่านนี้กำลังใช้งานอยู่ในระบบ";
+				}else{
+					
 				if($status == "0"){
 					$msg .="ท่านยังไม่ได้รับการยืนยัน";
 				}else if($status =="1"){
@@ -53,7 +60,7 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 						header("Refresh : 3;url = admin.php");
 					}
 				
-				
+				}
 				///$msglogout = "<a href='login.php'>ออกจากระบบ</a>";
 				
 				echo"$msguser <br/>";
@@ -67,7 +74,7 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 			
 				echo"$msguser <br/>";
 				echo "$msglogout<br/>";
-				echo "$msg </body></html>";
+				echo "<center>$msg </center></body></html>";
 				exit;
 			}
 		}else{
