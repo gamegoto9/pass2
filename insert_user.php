@@ -23,7 +23,7 @@ while($data = mysql_fetch_array($result)){
 	
 	if($_POST['id_code'] == $check_id_code[$i] || $_POST['id_card'] ==$check_id[$i]){
 		
-		echo "รหัสบุคลากรนี้มีผู้ใช้แล้ว<p>";
+		echo "รหัสบุคลากร หรือ รหัสประจำตัวประชาชน นี้มีผู้ใช้แล้ว<p>";
 		echo "<a href =\" javascript: history.back();\">ย้อนกลับ</a>";
 		exit;
 	}
