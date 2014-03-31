@@ -6,6 +6,13 @@ $time = date("H:i:s");
 $date = date("Y-m-d");
 
 if(isset($_POST['user']) && isset($_POST['pass'])){
+	
+	if(isset($_SESSION['user'])){
+				
+		echo "อุปกรณ์ของท่านอยู่ในระบบอยู่แล้ว กรุณา ออกจากระบบก่อน";
+			
+	}else{
+	
 	include("conn.php");
 	$user = $_POST['user'];
 	$pass = $_POST['pass'];
@@ -16,7 +23,11 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 	$id_card="";
 	$Bdate="";
 	$status="";
-	 while($data = mysql_fetch_object($result)){
+	
+	
+		
+		
+		while($data = mysql_fetch_object($result)){
 			
 			$user = "$data->U_id_code";
 			$id_card = "$data->U_id";
@@ -35,45 +46,34 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 		
 		 
 		if(mysql_num_rows($result) ==1){
-			
-			
-			
+						
 			if($pass == $password){
-				
-				
-				if(isset($_SESSION['user'])){
-				
-					$msg .="อุปกรณ์ของท่านอยู่ในระบบอยู่แล้ว กรุณา ออกจากระบบก่อน";
-				
-				}else{
+									
+						if($status == "0"){
+								$msg .="ท่านยังไม่ได้รับการยืนยัน";
+						}else if($status =="1"){
+						
+								$_SESSION['user'] = $user;
+								$_SESSION['status'] = '1';
+								//$msguser = $_SESSION['user'];
+						
+								$sql = "insert into detail values('$user','$date','$time','','','1');";
+						
+								$result = mysql_query("$sql")or die (mysql_error());
+								$msg .="รอสักครู่ 3 วินาที";
+								header("Refresh : 3;url = user.php");
+						}else{
+								$_SESSION['user'] = $user;
+								$_SESSION['status'] = '2';
+								//$msguser = $_SESSION['user'];
+						
+								$msg .="ยินดีต้อนรับผู้ดูแลระบบ รอสักครู่ 3 วินาที";
+								header("Refresh : 3;url = admin.php");
 					
-					
-				if($status == "0"){
-					$msg .="ท่านยังไม่ได้รับการยืนยัน";
-				}else if($status =="1"){
-						
-						$_SESSION['user'] = $user;
-						$_SESSION['status'] = '1';
-						//$msguser = $_SESSION['user'];
-						
-						$sql = "insert into detail values('$user','$date','$time','','','1');";
-						
-						$result = mysql_query("$sql")or die (mysql_error());
-						$msg .="รอสักครู่ 3 วินาที";
-						header("Refresh : 3;url = user.php");
-				}else
-					{
-						$_SESSION['user'] = $user;
-						$_SESSION['status'] = '2';
-						//$msguser = $_SESSION['user'];
-						
-						$msg .="ยินดีต้อนรับผู้ดูแลระบบ รอสักครู่ 3 วินาที";
-						header("Refresh : 3;url = admin.php");
-					}
 				
 				
 				
-				}
+			}
 				///$msglogout = "<a href='login.php'>ออกจากระบบ</a>";
 				
 				echo"$msguser <br/>";
@@ -90,7 +90,10 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 				echo "<center>$msg </center></body></html>";
 				exit;
 			}
-		}else{
+		
+			
+		}
+		else{
 			$msg = "Login หรือ Password ไม่ถูกต้อง<br/>";
 			$msg .="<a href =\"login.php\">ย้อนกลับ</a>";
 			
@@ -100,6 +103,12 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 				exit;
 		}
 		
+	}
+	
+	echo "<center>$msg </center></body></html>";
+		exit;
+	 
+
 		
 		
 }
