@@ -1,7 +1,13 @@
 <?
 session_start();
 if(isset($_SESSION['user'])){
-	//echo $_SESSION['user'];
+	if($_SESSION['status'] == '1'){
+		
+		header("Refresh : 3;url = user.php");
+		echo "<h3>ระบบไม่สามารถทำงานได้ เนื่องจากท่านไม่ใช่ผู้ดูแลระบบ จะกลับสู่หน้าหลักภายใน 3 วินาที </h3>";
+		echo "</body></html>";
+		exit;
+	}
 }else
 {
 	header("Refresh : 3;url = login.php");
